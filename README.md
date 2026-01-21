@@ -1,1 +1,563 @@
-# re.
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сынып Топтастыру</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), 
+                        url('https://static.insales-cdn.com/r/7xrUaJ45NqM/rs:fit:1000:0:1/q:100/plain/images/products/1/4265/2299924649/Momyshuly.png@png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.285);
+            border-radius: 25px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: containerAppear 0.8s ease-out;
+        }
+        
+        @keyframes containerAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Үш бағанды макет */
+        .three-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0;
+            height: 90vh;
+        }
+        
+        /* Әр баған */
+        .column {
+            padding: 30px 25px;
+            border-right: 2px solid rgba(221, 221, 221, 0.6);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            background: rgba(255, 255, 255, 0.375);
+        }
+        
+        .column:hover {
+            background: rgba(255, 255, 255, 0.216);
+        }
+        
+        .column:last-child {
+            border-right: none;
+        }
+        
+        /* Топ бағандары */
+        .group-column {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.9));
+        }
+        
+        /* Баған тақырыптары */
+        .column-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid;
+            text-align: center;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .column-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: currentColor;
+            border-radius: 2px;
+        }
+        
+        .group-1 .column-title {
+            color: #e74c3c;
+            border-bottom-color: #e74c3c;
+        }
+        
+        .group-2 .column-title {
+            color: #2ecc71;
+            border-bottom-color: #2ecc71;
+        }
+        
+        .group-3 .column-title {
+            color: #f39c12;
+            border-bottom-color: #f39c12;
+        }
+        
+        /* Оқушылар контейнері */
+        .students-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            border: 3px solid #e0e0e0;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0;
+            box-shadow: inset 0 4px 15px rgba(0,0,0,0.06);
+            scrollbar-width: thin;
+            scrollbar-color: #3498db #f1f1f1;
+        }
+        
+        .students-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .students-container::-webkit-scrollbar-track {
+            background: rgba(241, 241, 241, 0.8);
+            border-radius: 10px;
+        }
+        
+        .students-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 10px;
+        }
+        
+        /* Оқушы тізімі - БІР ҮЗДІК ТІЗІМ */
+        .student-list {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Әр оқушы жолы */
+        .student-row {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            min-height: 60px;
+            position: relative;
+        }
+        
+        .student-row:last-child {
+            border-bottom: none;
+        }
+        
+        .student-row:hover {
+            background: rgba(248, 249, 250, 0.95);
+            transform: translateX(5px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        /* Топтарға сәйкес түс */
+        .group-1 .student-row {
+            border-left: 6px solid #e74c3c;
+        }
+        
+        .group-2 .student-row {
+            border-left: 6px solid #2ecc71;
+        }
+        
+        .group-3 .student-row {
+            border-left: 6px solid #f39c12;
+        }
+        
+        .student-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+            width: 100%;
+        }
+        
+        .student-name::before {
+            content: '👤';
+            margin-right: 20px;
+            font-size: 22px;
+            opacity: 0.8;
+        }
+        
+        /* Бос хабарлама */
+        .empty-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: #95a5a6;
+            font-style: italic;
+            font-size: 22px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            margin: 10px;
+            line-height: 1.6;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Топтастыру түймесі */
+        .group-btn-container {
+            padding: 35px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.95), rgba(52, 73, 94, 0.95));
+            border-top: 2px solid rgba(255,255,255,0.15);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .group-btn-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .group-btn {
+            padding: 25px 70px;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 28px;
+            font-weight: 800;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 40px rgba(155, 89, 182, 0.5);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .group-btn:hover {
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 25px 50px rgba(155, 89, 182, 0.7);
+            animation: none;
+        }
+        
+        .group-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .group-btn::after {
+            content: ' 🎲';
+            margin-left: 20px;
+            animation: diceSpin 2s infinite;
+        }
+        
+        @keyframes diceSpin {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(90deg); }
+            50% { transform: rotate(180deg); }
+            75% { transform: rotate(270deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Хабарлама */
+        .message {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            padding: 25px 40px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 20px;
+            z-index: 1000;
+            animation: messageSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), messageFadeOut 0.5s ease 2.5s forwards;
+            box-shadow: 0 15px 40px rgba(46, 204, 113, 0.5);
+            transform-origin: top right;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%) rotate(10deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) rotate(0deg);
+            }
+        }
+        
+        @keyframes messageFadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(100%) scale(0.9);
+            }
+        }
+        
+        /* Анимация */
+        .student-row {
+            animation: studentAppear 0.5s ease-out;
+        }
+        
+        @keyframes studentAppear {
+            from {
+                opacity: 0;
+                transform: translateX(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Адаптивтік дизайн */
+        @media (max-width: 1400px) {
+            .three-columns {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr 1fr;
+                height: 1200px;
+            }
+            
+            .column {
+                height: 400px;
+                border-right: none;
+                border-bottom: 2px solid rgba(221, 221, 221, 0.6);
+            }
+            
+            .column:last-child {
+                border-bottom: none;
+            }
+            
+            .student-name {
+                font-size: 20px;
+            }
+            
+            .column-title {
+                font-size: 28px;
+            }
+            
+            .group-btn {
+                font-size: 24px;
+                padding: 20px 50px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .student-name {
+                font-size: 18px;
+            }
+            
+            .column-title {
+                font-size: 24px;
+            }
+            
+            .group-btn {
+                font-size: 20px;
+                padding: 18px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Үш баған -->
+        <div class="three-columns">
+            <!-- 1-баған: Топ 1 -->
+            <div class="column group-column group-1">
+                <div class="column-title">Топ 1</div>
+                
+                <div class="students-container" id="group1List">
+                    <div class="empty-message">
+                        Топ бос<br>
+                        Топтастыру басталғанша күтіңіз
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2-баған: Топ 2 -->
+            <div class="column group-column group-2">
+                <div class="column-title">Топ 2</div>
+                
+                <div class="students-container" id="group2List">
+                    <div class="empty-message">
+                        Топ бос<br>
+                        Топтастыру басталғанша күтіңіз
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3-баған: Топ 3 -->
+            <div class="column group-column group-3">
+                <div class="column-title">Топ 3</div>
+                
+                <div class="students-container" id="group3List">
+                    <div class="empty-message">
+                        Топ бос<br>
+                        Топтастыру басталғанша күтіңіз
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Топтастыру түймесі -->
+        <div class="group-btn-container">
+            <button class="group-btn" onclick="createRandomGroups()">ТОПҚА БӨЛУ</button>
+        </div>
+    </div>
+
+    <script>
+        // Деректер - 24 оқушы
+        let students = [
+            "Абдулла Кәусар", "Еркежан", "Ернар", 
+                "Айым", "Нұрман", "Алижан", 
+                 "Назерке", "Дария", 
+                "Балнұр", "Тәңірберген", "Ханшайым",
+                "Айғаным", "Алдияр", "Жанарыс",
+                "Айдын", "Дарын", "Санжар",
+                "Әмірхан", "Сұлтанай Кәусар", "Алпамыс",
+                "Дінмұхамед", "Дания", "Аида"
+        ];
+        
+        let groups = [[], [], []]; // 3 топ
+        let isAnimating = false;
+        
+        // Бет жүктелгенде
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDisplay();
+        });
+        
+        // Кездейсоқ топтастыру
+        function createRandomGroups() {
+            if (isAnimating) return;
+            
+            isAnimating = true;
+            
+            // Оқушыларды кездейсоқ араластыру
+            let shuffledStudents = [...students];
+            for (let i = shuffledStudents.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledStudents[i], shuffledStudents[j]] = [shuffledStudents[j], shuffledStudents[i]];
+            }
+            
+            // 24 оқушыны 3 топқа бөлу: 8 + 8 + 8
+            groups[0] = shuffledStudents.slice(0, 8);   // 8 оқушы
+            groups[1] = shuffledStudents.slice(8, 16);  // 8 оқушы  
+            groups[2] = shuffledStudents.slice(16);     // 8 оқушы
+            
+            updateDisplay();
+            showMessage('24 оқушы 3 топқа бөлінді! 🎯');
+            
+            // Кішкене анимация
+            setTimeout(() => {
+                isAnimating = false;
+            }, 500);
+        }
+        
+        // Барлық дисплейді жаңарту
+        function updateDisplay() {
+            updateGroup(0);
+            updateGroup(1);
+            updateGroup(2);
+        }
+        
+        // Топты жаңарту
+        function updateGroup(groupIndex) {
+            const container = document.getElementById(`group${groupIndex + 1}List`);
+            
+            const groupStudents = groups[groupIndex];
+            
+            if (groupStudents.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-message">
+                        Топ бос<br>
+                        Топтастыру басталғанша күтіңіз
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '<div class="student-list">';
+            groupStudents.forEach((student, index) => {
+                html += `
+                    <div class="student-row" style="animation-delay: ${index * 0.05}s">
+                        <div class="student-name">${student}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            container.innerHTML = html;
+        }
+        
+        // Хабарлама көрсету
+        function showMessage(text, type = 'success') {
+            const message = document.createElement('div');
+            message.className = 'message';
+            message.textContent = text;
+            
+            if (type === 'error') {
+                message.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+            }
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                if (message.parentNode) {
+                    message.parentNode.removeChild(message);
+                }
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
